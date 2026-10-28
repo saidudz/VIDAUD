@@ -1,97 +1,160 @@
-# VIDAUD
+VIDADU
 
-Professional desktop app for Windows that downloads videos and audio from supported sites. Built with Electron + React + TypeScript, powered by [yt-dlp](https://github.com/yt-dlp/yt-dlp) and [FFmpeg](https://ffmpeg.org/).
+**Video & Audio Downloader for Windows**
+
+VIDAUD is a Windows desktop application built with Electron, Vite, React, and TypeScript. It provides a single interface for analyzing supported media links, managing download tasks, organizing completed downloads, and converting local files when the required conversion tools are available.
+
+> **Project status:** This repository contains the application source code. For a ready-to-install Windows build, check the [GitHub Releases](https://github.com/saidudz/VIDAUD/releases) page. If no release is published yet, a downloadable installer may not be available there.
+
+![VIDAUD logo](Logo.png)
 
 ## Features
 
-- Paste a URL, analyze it, and download as **MP4 (video)** or **MP3 (audio)**
-- Video quality selection: 1080p, 720p, 480p, 360p (best available is selected when the requested height is not available)
-- MP3 bitrate: 128/192/256/320 kbps, with title/artist metadata and thumbnail cover art
-- **Playlist support**: detect and download all videos in a playlist
-- **Download queue**: add multiple items, per-task and global pause/resume/cancel/retry, remove, clear completed
-- **Concurrent downloads**: configurable max simultaneous downloads (default 2)
-- **Resume**: interrupted tasks are restored as `Paused` on next launch and can be resumed
-- **Progress UI**: live progress bar, percentage, speed, ETA, and collapsible technical details
-- **History**: full download history with search and filters, persisted to disk
-- **Settings**: download folder, video quality, MP3 bitrate, max simultaneous downloads, retry count/delay, auto-start queue, thumbnail saving, notifications, theme (dark/light/system)
-- **Multilingual**: English, Arabic (RTL), French
-- **Existing file strategy**: rename, replace, or skip
-- Packaged as `VIDAUD.exe` (portable) and `VIDAUD-Setup.exe` (NSIS installer)
+### Media downloads
 
-## Prerequisites (development)
+- Paste a supported URL and analyze it before downloading.
+- Download supported video as **MP4** and audio as **MP3**.
+- Select available video quality, including 1080p, 720p, 480p, and 360p when offered by the source.
+- Configure MP3 bitrate options: 128, 192, 256, or 320 kbps.
+- Download supported playlists and queue multiple items.
+- View download progress, percentage, speed, estimated time remaining, and technical details when available.
 
-- Windows 10/11 (x64)
-- Node.js 18+ (tested with Node 24)
+Availability and quality depend on the source website, network access, and the formats it provides. Some links may be unavailable, region-restricted, authentication-protected, or unsupported.
 
-## Development
+### Download queue and task management
+
+- Pause, resume, retry, cancel, and remove download tasks.
+- Configure the maximum number of simultaneous downloads.
+- Resume interrupted tasks when the application supports recovery; interrupted tasks may be restored as paused.
+- Choose how existing files are handled, such as renaming, replacing, or skipping them, according to the available settings.
+- Clear completed tasks and manage downloads from the Downloads and Completed sections.
+
+### History
+
+- Keep a persistent record of download activity.
+- Search and filter previous tasks where supported by the current interface.
+
+### Settings
+
+- Choose the download folder.
+- Configure video quality and MP3 bitrate.
+- Set concurrent download limits and retry behavior.
+- Configure automatic downloads, notifications, and other available preferences.
+- Choose from the available interface languages: English, Arabic (RTL), and French.
+
+### Converter
+
+VIDAUD includes a Converter interface for supported local-file conversions. Available formats and operations depend on the conversion engine and tools configured in the application. A format should be considered supported only when the installed build provides the required processing capability.
+
+## Download and install
+
+1. Open [VIDAUD Releases](https://github.com/saidudz/VIDAUD/releases).
+2. Choose the latest stable release, if one is available.
+3. Download the Windows installer provided with that release (for example, a `VIDAUD-Setup-*.exe` file).
+4. Run the installer and follow the on-screen instructions.
+
+Only download installers from the official VIDADU repository or another distribution location you trust.
+
+## System requirements
+
+- Windows 10 or Windows 11, 64-bit.
+- An internet connection for online media downloads and update checks.
+- Some conversion and media-processing features rely on bundled or configured tools such as FFmpeg and yt-dlp.
+
+## Development setup
+
+### Prerequisites
+
+- Node.js 18 or later (the project has also been tested with Node.js 24, according to the project documentation).
+- npm.
+- Git, if you plan to clone the repository.
+
+### Clone the repository
+
+```bash
+git clone https://github.com/saidudz/VIDAUD.git
+cd VIDAUD
+```
+
+### Install dependencies
 
 ```bash
 npm install
-npm run typecheck   # tsc --noEmit for main/preload + renderer
-npm run build       # electron-vite build -> out/
-npm run dev         # electron-vite dev (HMR)
 ```
 
-`npm run dev` requires port 5173 to be free.
+If the repository lockfile is current and you want a reproducible CI-style installation, use `npm ci` instead.
 
-## Downloading fresh binaries
-
-The runtime binaries live in `resources/bin` and are bundled into the installer via `extraResources`.
+### Run type checks
 
 ```bash
-node scripts/download-binaries.mjs   # yt-dlp.exe + ffmpeg.exe with pinned fallbacks
+npm run typecheck
 ```
 
-If the download fails, place `yt-dlp.exe` and `ffmpeg.exe` manually into `resources/bin`.
-
-## Testing
+### Build the application
 
 ```bash
-node scripts/smoke-test.mjs          # standalone CLI integration test (analyze/download/merge/convert)
+npm run build
 ```
 
-End-to-end in-app smoke (drives the real queue via IPC, gated by env vars):
+### Run in development mode
 
 ```bash
-$env:VIDAUD_SMOKE_URL='https://www.youtube.com/watch?v=...'
-$env:VIDAUD_SMOKE_KIND='video'    # or 'audio'
-$env:VIDAUD_SMOKE_QUALITY='360'   # or mp3 bitrate e.g. 128
-$env:VIDAUD_SMOKE_FOLDER='C:\path\to\output'
-npx electron .
+npm run dev
 ```
 
-The process exits `0` on success (with the output file path), `1` on download failure, `2` on smoke error.
-
-## Packaging
+The development server requires port **5173** to be available. If a command is not defined in `package.json`, inspect the available scripts with:
 
 ```bash
-npm run package   # npx electron-builder --win
+npm run
 ```
 
-Produces:
+Packaging commands and output directories are defined by the project's current `package.json` and Electron Builder configuration. Check those files for the exact command used to generate the portable executable and NSIS installer.
 
-- `dist/VIDAUD-Setup.exe` — NSIS installer (per-user, no admin required)
-- `dist/VIDAUD.exe` — portable single-file app
-- `dist/win-unpacked/VIDAUD.exe` — unpacked app
+## Releases and updates
 
-## Project Structure
+- Source code: [GitHub repository](https://github.com/saidudz/VIDAUD)
+- Published versions: [GitHub Releases](https://github.com/saidudz/VIDAUD/releases)
 
-```
-resources/bin/          yt-dlp.exe + ffmpeg.exe (bundled at runtime)
-scripts/                icon generator, binary downloader, smoke tests
-src/shared/types.ts     shared IPC contract and types (main + preload + renderer)
-src/main/               Electron main process (settings, queue, downloader, ffmpeg, history, IPC)
-src/preload/            contextBridge API exposed as window.vidaud
-src/renderer/           React UI (Dashboard, Downloads, History, Settings, i18n)
-electron-builder.yml    packaging config
-```
+A link to the Releases page does not, by itself, provide automatic in-app updates. Automatic updates require a correctly configured updater, a compatible packaged Windows build, and the expected release metadata/assets. Do not assume automatic updates are enabled until they have been implemented and tested against a newer published release.
+
+## Troubleshooting
+
+### A download fails or the source is unavailable
+
+Confirm that the URL is correct and that the source is accessible from your location and account. Some sites restrict downloads, remove content, or change their delivery methods. VIDADU cannot guarantee that every URL or playlist can be downloaded.
+
+### Audio conversion fails
+
+Check that the input contains an audio stream and that the bundled/configured FFmpeg executable is available. Files without an audio stream cannot be converted to MP3 as audio.
+
+### The development server cannot start
+
+Make sure port `5173` is free, install dependencies again if needed, and review the terminal output for the actual error.
+
+### A Windows installer is not listed on GitHub
+
+The repository may contain source code before a packaged release has been published. Check the Releases page for an installer, or build the application using the project's configured packaging scripts.
+
+## Responsible use
+
+Use VIDADU only for content you are authorized to download and process. Respect copyright, website terms, privacy, and access restrictions. Do not use the application to bypass DRM, authentication, or other access controls.
 
 ## Security
 
-- `contextIsolation: true`, `sandbox: true`, no `nodeIntegration`
-- Renderer only talks to main via a validated, typed IPC API (`window.vidaud`)
-- All IPC inputs (URLs, task ids, settings) are validated in `src/main/ipc.ts`
+- **Never commit API keys, access tokens, passwords, browser cookies, private keys, or secret `.env` files.**
+- Keep credentials in local environment files or secure secret storage and exclude them from Git with `.gitignore`.
+- Review changes before committing or publishing the repository.
+- Report security issues privately to the repository maintainer rather than posting secrets or exploit details publicly.
 
-## Legal
+## Contributing
 
-Respect the terms of service of the sites you download from, and only download content you have the right to use.
+Contributions and bug reports are welcome. Before opening a pull request:
+
+1. Describe the problem or proposed change.
+2. Keep changes focused and avoid committing generated binaries or personal data.
+3. Run the available type checks and build commands.
+4. Include clear reproduction steps for bug fixes.
+
+## License
+
+No license file is currently provided in this repository. Unless a license is added, do not assume that the source code may be redistributed, modified, or reused under an open-source license.
