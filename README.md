@@ -52,11 +52,6 @@ If no release asset is available, a ready-to-install build has not yet been publ
 - An internet connection for online downloads and any configured update checks.
 - Some media-processing or conversion features may require tools such as FFmpeg or yt-dlp, depending on the installed build.
 
-## Releases and updates
-
-- **Source repository:** [saidudz/VIDAUD](https://github.com/saidudz/VIDAUD)
-- **Download releases:** [VIDAUD Releases](https://github.com/saidudz/VIDAUD/releases)
-
 The Releases page lets users check for published versions and download their attached files. A link to this page does not, by itself, enable automatic updates inside the application; in-app updates require a properly configured updater and compatible release assets. Automatic updating should not be considered available until it has been implemented and tested in a packaged Windows build.
 
 ## Troubleshooting
