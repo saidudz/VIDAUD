@@ -1,0 +1,83 @@
+appId: com.vidaud.app
+productName: VIDAUD
+copyright: Copyright © 2026 VIDAUD
+# Maximum 7z compression (nsis + portable) for the smallest possible installer.
+compression: maximum
+directories:
+  buildResources: resources
+  output: dist
+files:
+  - out/**/*
+  - package.json
+  - resources/icon.ico
+  - resources/icon.png
+asarUnpack:
+  - out/main/**/*
+  - out/preload/**/*
+  # The Tesseract worker thread loads its script + WASM core + deps straight
+  # from node_modules on disk, so the whole production dependency tree must be
+  # unpacked next to the asar (app.asar.unpacked/node_modules).
+  - node_modules/**/*
+extraResources:
+  - from: resources/bin
+    to: bin
+    filter:
+      - "**/*"
+  - from: resources/pdf
+    to: pdf
+    filter:
+      - "**/*"
+  - from: resources/ocr
+    to: ocr
+    filter:
+      - "**/*"
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+  icon: resources/icon.ico
+  executableName: VIDAUD
+  legalTrademarks: VIDAUD
+  # Digitally-ready signing: electron-builder signs automatically whenever the
+  # standard certificate env vars are present at build time. No config change
+  # is needed to activate signing later — just provide:
+  #   CSC_LINK=<path-or-data-uri-to.pfx-or-cert>   CSC_KEY_PASSWORD=<password>
+  # (or install the certificate in the machine store for cloud/OV signing).
+  # The "Publisher" column shown in Windows Apps & Features is taken from the
+  # package.json "author" name and written by the NSIS script automatically.
+nsis:
+  oneClick: false
+  # Custom NSIS script (resources/installer.nsh) that adds a proper Welcome
+  # page as the first wizard page and (as a fallback) forces a per-machine
+  # install so the "Choose Installation Options" page never appears.
+  include: resources/installer.nsh
+  # Per-machine install (all users, Administrator rights): VIDAUD installs to
+  # "C:\Program Files\VIDAUD" by default and registers in HKLM (visible in
+  # Windows Settings > Apps > Installed apps for every user). When perMachine
+  # is true, electron-builder automatically removes the "Choose Installation
+  # Options" page (all users / only for me) and requests elevation via UAC.
+  perMachine: true
+  allowToChangeInstallationDirectory: true
+  # Custom left-side image shown on the Welcome page AND the "Completing VIDAUD
+  # Setup" (Finish) page. Generated from build/Installer.png (source:
+  # C:\Users\SAIDU\Downloads\Installer.png) as a 164x314 BMP (aspect ratio
+  # preserved, contain) and embedded into the installer itself. Regenerate with:
+  #   npm run installer-image
+  installerSidebar: build/installerSidebar.bmp
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: VIDAUD
+  artifactName: VIDAUD Setup.exe
+  uninstallDisplayName: VIDAUD
+  # Explicit icons so the installer window, the installed shortcuts and the
+  # uninstaller entry in Apps & Features all carry the VIDAUD icon.
+  installerIcon: resources/icon.ico
+  uninstallerIcon: resources/icon.ico
+  installerHeaderIcon: resources/icon.ico
+  deleteAppDataOnUninstall: false
+portable:
+  artifactName: VIDAUD.exe

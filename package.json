@@ -1,0 +1,45 @@
+{
+  "name": "vidaud",
+  "version": "1.0.0",
+  "description": "VIDAUD - Professional video & audio downloader for Windows",
+  "main": "out/main/index.js",
+  "author": "VIDAUD",
+  "license": "MIT",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
+    "binaries": "node scripts/download-binaries.mjs",
+    "icon": "node scripts/generate-icon.mjs",
+    "setup": "npm install && node scripts/generate-icon.mjs && node scripts/download-binaries.mjs",
+    "clean": "powershell -NoProfile -Command \"Remove-Item -Recurse -Force out,dist -ErrorAction SilentlyContinue; Write-Host 'Cleaned out/ and dist/'\"",
+    "installer-image": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/prepare-installer-image.ps1",
+    "package": "npm run clean && npm run installer-image && npm run build && electron-builder --win && node scripts/copy-release.mjs",
+    "package:dir": "npm run clean && npm run installer-image && npm run build && electron-builder --win --dir",
+    "dist": "npm run clean && npm run installer-image && npm run build && electron-builder --win && node scripts/copy-release.mjs",
+    "release": "node scripts/copy-release.mjs"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^1.0.6",
+    "@pdf-lib/fontkit": "^1.1.1",
+    "docx": "^9.7.1",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.2.108",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tesseract.js": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "adm-zip": "^0.5.14",
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^2.3.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.0"
+  }
+}
