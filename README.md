@@ -4,7 +4,7 @@ VIDADU
 
 VIDAUD is a Windows desktop application for managing supported video, audio, and playlist downloads, organizing completed files, and converting local media when the required tools and formats are available.
 
-![VIDAUD background and branding]([background.png](https://github.com/saidudz/VIDAUD/blob/main/scripts/background.png?raw=true)
+![VIDAUD background and branding]([Url](https://github.com/saidudz/VIDAUD/blob/main/scripts/background.png?raw=true)
 
 ## Features
 
