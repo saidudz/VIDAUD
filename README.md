@@ -11,7 +11,7 @@ VIDAUD is a Windows desktop application for managing supported video, audio, and
 ### Video, audio, and playlist downloads
 
 - Paste a supported link and analyze it before downloading.
-- Download supported video as MP4 and audio as MP3.
+- Download supported video as MP4 and audio as MP3 And more
 - Choose from quality and bitrate options offered by the source and application.
 - Queue multiple tasks and download supported playlists.
 - View task progress and technical details when available.
