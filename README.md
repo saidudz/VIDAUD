@@ -1,6 +1,6 @@
 VIDADU
 
-**Video & Audio Downloader for Windows**
+**Video & Audio Downloader & Converter Free**
 
 VIDAUD is a Windows desktop application for managing supported video, audio, and playlist downloads, organizing completed files, and converting local media when the required tools and formats are available.
 
