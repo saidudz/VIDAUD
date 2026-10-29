@@ -33,6 +33,8 @@ Download availability depends on the source website, network conditions, access 
 - Configure available startup, notification, and language preferences.
 - Use the available English, Arabic (RTL), and French interface options.
 
+- <img width="1920" height="1032" alt="Screenshot 2026-10-29 134621" src="https://github.com/user-attachments/assets/bead7c8d-1346-46b3-a848-682bdda5011b" />— First Windows Release
+
 ### Converter
 
 VIDAUD includes a Converter interface for supported local-file conversions. Available formats and operations depend on the conversion tools included with or configured for the installed version. Check the options presented by your installed application for the formats it supports.
