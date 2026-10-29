@@ -34,7 +34,7 @@ Download availability depends on the source website, network conditions, access 
 - Use the available English, Arabic (RTL), and French interface options.
 - 
 
-- <img width="1920" height="1032" alt="Screenshot 2026-10-29 134621" src="https://github.com/user-attachments/assets/bead7c8d-1346-46b3-a848-682bdda5011b"  />—
+- <img width="1920" height="1032" alt="Screenshot 2026-10-29 134621" src="https://github.com/user-attachments/assets/bead7c8d-1346-46b3-a848-682bdda5011b" />—
 - 
 
 ### Converter
